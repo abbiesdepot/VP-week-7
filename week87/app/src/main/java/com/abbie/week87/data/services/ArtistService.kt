@@ -12,35 +12,14 @@ import retrofit2.http.Query
 interface ArtistService {
 
     @GET("search.php")
-    suspend fun searchArtist(
-        @Query("s") artistName: String
-    ): Response<Artistapi>
+    suspend fun searchArtist(@Query("s") artistName: String): ArtistResponse
 
     @GET("searchalbum.php")
-    suspend fun searchAlbumsByArtist(
-        @Query("s") artistName: String
-    ): Response<Albumapi>
+    suspend fun getAlbums(@Query("s") artistName: String): AlbumResponse
 
     @GET("album.php")
-    suspend fun getAlbumDetail(
-        @Query("m") albumId: String
-    ): Response<Albumapi>
+    suspend fun getAlbumDetail(@Query("m") albumId: String): AlbumResponse
 
     @GET("track.php")
-    suspend fun getAlbumTracks(
-        @Query("m") albumId: String
-    ): Response<Trackapi>
-
-    companion object {
-        private const val BASE_URL = "https://www.theaudiodb.com/api/v1/json/2/"
-
-        fun create(): ArtistService {
-            val retrofit = Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-
-            return retrofit.create(ArtistService::class.java)
-        }
-    }
+    suspend fun getTracks(@Query("m") albumId: String): TrackResponse
 }
